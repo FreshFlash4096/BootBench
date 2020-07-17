@@ -1,0 +1,12 @@
+[global]
+direct=1
+filename=${FILENAME}
+ioengine=libaio
+bs=128k
+randrepeat=0
+
+[write_job]
+rw=randwrite
+norandommap=1
+iodepth=16
+size=${INIT_WRITE_SIZE}
