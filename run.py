@@ -29,7 +29,7 @@ def get_blkdev_size(name):
         return os.lseek(fd, 0, os.SEEK_END)
     finally:
         os.close(fd)
-        
+
 def parse_output(output):
     with open(output, 'r') as f:
         data = json.load(f)
@@ -74,14 +74,14 @@ def run_rrbench(numjobs):
         if j['read']['clat_ns']['percentile']['99.000000'] > 5 * 10**7:
             return -1
         read_iops = j['read']['iops']
-        
+
     # print('\nsuccess with read iops %d\n' % read_iops)
     return read_iops
 
-        
+
 def system_check():
     global parameters
-    
+
     if os.getuid() != 0:
         print('Please run as root')
         return False
@@ -93,7 +93,7 @@ def system_check():
     except:
         print('%s is not a block device' % sys.argv[1])
         return False
-    
+
     if not stat.S_ISBLK(st.st_mode):
         print('%s is not a block device' % sys.argv[1])
         return False
@@ -107,22 +107,22 @@ def system_check():
 
 def rrbench_bisect():
     global parameters
-    
+
     (low, numjobs, high) = (1, 1, 1)
 
     parameters['FIO_RUN_TIME'] = 30
-               
+
     read_iops = run_rrbench(numjobs)
-    
-    while read_iops != -1 and high < 1024:
+
+    while read_iops != -1 and high < 256:
         low = high
         high *= 2
         numjobs = high
-        
+
         read_iops = run_rrbench(numjobs)
 
     parameters['FIO_RUN_TIME'] = 60
-               
+
     while high - low > 1:
         numjobs = int((high + low) / 2)
         read_iops = run_rrbench(numjobs)
@@ -142,11 +142,10 @@ def rrbench_bisect():
 def main():
     if not system_check():
         sys.exit(1)
-        
+
     discard_all(parameters['FILENAME'])
     run_init_write()
     rrbench_bisect()
 
 if __name__ == '__main__':
     main()
-    
