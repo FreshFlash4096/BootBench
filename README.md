@@ -1,3 +1,5 @@
 # bootbench
 
-Run as bootbench.py <test_device>
+Run as 
+
+  run.py <test_device>
