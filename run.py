@@ -4,6 +4,7 @@ import sys
 import stat
 import json
 import time
+from datetime import datetime
 
 def usage():
     print('Uage:')
@@ -137,12 +138,24 @@ def rrbench_bisect():
         numjobs -= 1
         read_iops = run_rrbench(numjobs)
 
-    print('We get %d iops with numjobs of %d' % (read_iops, numjobs))
+    result_str = 'We get %d iops with numjobs of %d' % (read_iops, numjobs)
+    print(result_str)
+    with open('final_result.txt', 'w') as f:
+        f.write(result_str)
+
+def create_output():
+    shortname = parameters['FILENAME'].split('/')[-1]
+    now = datetime.now()
+    out = 'outputs/' + now.strftime('%Y%m%d-%H%M%S-') + shortname
+    os.makedirs(out)
+    os.system('cp *.fio ' + out);
+    os.chdir(out)
 
 def main():
     if not system_check():
         sys.exit(1)
 
+    create_output()
     discard_all(parameters['FILENAME'])
     run_init_write()
     rrbench_bisect()
