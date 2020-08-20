@@ -138,7 +138,7 @@ def rrbench_bisect():
         numjobs -= 1
         read_iops = run_rrbench(numjobs)
 
-    result_str = 'We get %d iops with numjobs of %d' % (read_iops, numjobs)
+    result_str = 'We get %d iops with numjobs of %d\n' % (read_iops, numjobs)
     print(result_str)
     with open('final_result.txt', 'w') as f:
         f.write(result_str)
