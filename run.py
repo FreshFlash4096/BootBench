@@ -50,7 +50,7 @@ def run_rrbench(numjobs):
 
     time.sleep(10)
     jobname='rrbench'
-    output = jobname + '_' + sys.argv[1].split('/')[-1] + '.out.json'
+    output = jobname + '_' + sys.argv[1].split('/')[-1] + '_' + str(numjobs) + '.out.json'
     jobfile = jobname + '.fio'
 
     parameters['NUMJOBS'] = numjobs
