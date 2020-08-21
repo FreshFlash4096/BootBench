@@ -101,7 +101,7 @@ def system_check():
 
     parameters['FILENAME'] = sys.argv[1]
     parameters['DEV_SIZE'] = get_blkdev_size(sys.argv[1])
-    parameters['INIT_WRITE_SIZE'] = parameters['DEV_SIZE'] / 2
+    parameters['INIT_WRITE_SIZE'] = parameters['DEV_SIZE'] * 2
 
     return True
 
