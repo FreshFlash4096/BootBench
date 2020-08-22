@@ -65,8 +65,8 @@ def run_rrbench(numjobs):
         if j['jobname'] != 'read_job':
             continue
 
-        # check max latency <= 100 ms
-        if j['read']['clat_ns']['max'] > 10**8:
+        # check max latency <= 300 ms
+        if j['read']['clat_ns']['max'] > 3*10**8:
             return -1
         # check p99.9 latency <= 50 ms
         if j['read']['clat_ns']['percentile']['99.900000'] > 5 * 10**7:
