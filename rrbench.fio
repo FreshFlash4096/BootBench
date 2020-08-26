@@ -22,3 +22,12 @@ rate=15m
 rate_min=5m
 rate_cycle=5000
 rate_ignore_thinktime=1
+
+[trim_job]
+rw=randtrim
+bs=128k
+ioengine=sync
+rate=5m
+rate_min=2m
+rate_cycle=5000
+rate_ignore_thinktime=1
