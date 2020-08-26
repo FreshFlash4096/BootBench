@@ -136,9 +136,14 @@ def rrbench_bisect():
     parameters['FIO_RUN_TIME'] = 120
     while read_iops == -1:
         numjobs -= 1
+        if numjobs == 0:
+            break
         read_iops = run_rrbench(numjobs)
 
-    result_str = 'We get %d iops with numjobs of %d\n' % (read_iops, numjobs)
+    if numjobs == 0:
+        result_str = 'Cannot meet latency requirement\n'
+    else:
+        result_str = 'We get %d iops with numjobs of %d\n' % (read_iops, numjobs)
     print(result_str)
     with open('final_result.txt', 'w') as f:
         f.write(result_str)
