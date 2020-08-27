@@ -123,21 +123,23 @@ def rrbench_bisect():
 
     parameters['FIO_RUN_TIME'] = 60
 
-    while high - low > 1:
-        numjobs = int((high + low) / 2)
-        read_iops = run_rrbench(numjobs)
+    # if numjobs of 256 works, skip the bisect
+    if read_iops == -1 or high < 256:
+        while high - low > 1:
+            numjobs = int((high + low) / 2)
+            read_iops = run_rrbench(numjobs)
 
-        if read_iops == -1:
-            high = numjobs
-        else:
-            low = numjobs
+            if read_iops == -1:
+                high = numjobs
+            else:
+                low = numjobs
 
-    parameters['FIO_RUN_TIME'] = 120
-    while read_iops == -1:
-        numjobs -= 1
-        if numjobs == 0:
-            break
-        read_iops = run_rrbench(numjobs)
+        parameters['FIO_RUN_TIME'] = 120
+        while read_iops == -1:
+            numjobs -= 1
+            if numjobs == 0:
+                break
+            read_iops = run_rrbench(numjobs)
 
     if numjobs == 0:
         result_str = 'Cannot meet latency requirement\n'
