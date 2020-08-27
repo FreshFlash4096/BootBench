@@ -162,6 +162,7 @@ def main():
     create_output()
     discard_all(parameters['FILENAME'])
     run_init_write()
+    run_init_write()
     rrbench_bisect()
 
 if __name__ == '__main__':

@@ -9,4 +9,4 @@ randrepeat=0
 rw=randwrite
 norandommap=1
 iodepth=16
-size=200%
+size=100%

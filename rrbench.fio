@@ -3,6 +3,7 @@ filename=${FILENAME}
 randrepeat=0
 time_based=1
 runtime=${FIO_RUN_TIME}
+norandommap=1
 
 [read_job]
 rw=randread
@@ -14,7 +15,7 @@ direct=1
 ioengine=libaio
 
 [write_job]
-rw=write
+rw=randwrite
 bs=128k
 ioengine=sync
 fsync=1024
