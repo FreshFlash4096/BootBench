@@ -45,6 +45,13 @@ def run_init_write():
     run_fio('init_write.fio', 'init_write.out.json', parameters)
     time.sleep(60)
 
+
+def print_result(result_str):
+    print(result_str)
+    with open('final_result.txt', 'w') as f:
+        f.write(result_str)
+
+
 def run_rrbench(numjobs):
     global parameters
 
@@ -57,11 +64,16 @@ def run_rrbench(numjobs):
     run_fio(jobfile, output, parameters)
     data = parse_output(output)
 
-    read_iops = -1
-    # check output
+    # check errors
     for j in data['jobs']:
         if j['error'] != 0:
-            return -1
+            result_str = 'job %s experienced error' % j['jobname']
+            print_result(result_str)
+            sys.exit(1)
+
+    read_iops = -1
+    # check latency and iops
+    for j in data['jobs']:
         if j['jobname'] != 'read_job':
             continue
 
@@ -145,9 +157,8 @@ def rrbench_bisect():
         result_str = 'Cannot meet latency requirement\n'
     else:
         result_str = 'We get %d iops with numjobs of %d\n' % (read_iops, numjobs)
-    print(result_str)
-    with open('final_result.txt', 'w') as f:
-        f.write(result_str)
+    print_result(result_str)
+
 
 def create_output():
     shortname = parameters['FILENAME'].split('/')[-1]
@@ -156,6 +167,7 @@ def create_output():
     os.makedirs(out)
     os.system('cp *.fio ' + out);
     os.chdir(out)
+
 
 def main():
     if not system_check():
