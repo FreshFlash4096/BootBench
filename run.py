@@ -92,6 +92,23 @@ def run_rrbench(numjobs):
     return read_iops
 
 
+def repeat_rrbench(numjobs, repeat):
+    iops = run_rrbench(numjobs)
+    if iops < 0:
+        return -1
+
+    i = 1
+
+    while i < repeat:
+        new_iops = run_rrbench(numjobs)
+        if new_iops < 0:
+            return -1
+
+        iops = min(iops, new_iops)
+        i += 1
+    return iops
+
+
 def system_check():
     global parameters
 
@@ -151,7 +168,7 @@ def rrbench_bisect():
             numjobs -= 1
             if numjobs == 0:
                 break
-            read_iops = run_rrbench(numjobs)
+            read_iops = repeat_rrbench(numjobs, 3)
 
     if numjobs == 0:
         result_str = 'Cannot meet latency requirement\n'
