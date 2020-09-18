@@ -67,9 +67,12 @@ def run_rrbench(numjobs):
     # check errors
     for j in data['jobs']:
         if j['error'] != 0:
-            result_str = 'job %s experienced error' % j['jobname']
-            print_result(result_str)
-            sys.exit(1)
+            if numjobs < 8:
+                result_str = 'job %s experienced error' % j['jobname']
+                print_result(result_str)
+                sys.exit(1)
+            else:
+                return -1
 
     read_iops = -1
     # check latency and iops
