@@ -3,7 +3,6 @@ import os
 import sys
 import stat
 import json
-import time
 from datetime import datetime
 
 def usage():
@@ -43,7 +42,6 @@ def discard_all(dev):
 
 def run_init_write():
     run_fio('init_write.fio', 'init_write.out.json', parameters)
-    time.sleep(60)
 
 
 def print_result(result_str):
@@ -55,7 +53,6 @@ def print_result(result_str):
 def run_rrbench(numjobs):
     global parameters
 
-    time.sleep(10)
     jobname='rrbench'
     output = jobname + '_' + sys.argv[1].split('/')[-1] + '_' + str(numjobs) + '.out.json'
     jobfile = jobname + '.fio'
