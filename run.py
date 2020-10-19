@@ -137,7 +137,7 @@ def system_check():
 def rrbench_bisect():
     global parameters
 
-    (low, numjobs, high) = (1, 1, 1)
+    (low, numjobs, high) = (4, 4, 4)
 
     parameters['FIO_RUN_TIME'] = 30
 
@@ -166,11 +166,11 @@ def rrbench_bisect():
         parameters['FIO_RUN_TIME'] = 120
         while read_iops == -1:
             numjobs -= 1
-            if numjobs == 0:
+            if numjobs < 4:
                 break
             read_iops = repeat_rrbench(numjobs, 3)
 
-    if numjobs == 0:
+    if numjobs < 4:
         result_str = 'Cannot meet latency requirement\n'
     else:
         result_str = 'We get %d iops with numjobs of %d\n' % (read_iops, numjobs)
